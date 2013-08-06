@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+<log4j:configuration debug="true">
+
+  <appender name="fileAppender" class="org.apache.log4j.FileAppender">
+    <param name="file" value="textgrep.log" />
+    <param name="append" value="true" />
+    <param name="threshold" value="info" />
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yy/MM/dd HH:mm:ss} %p %c: %m%n"/>
+    </layout>
+  </appender>
+
+  <appender name="consoleAppender" class="org.apache.log4j.ConsoleAppender">
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yy/MM/dd HH:mm:ss} %p %c: %m%n"/>
+    </layout>
+  </appender>
+
+  <logger name="org.hibernate">
+    <level value="WARN" />
+  </logger>
+
+  <logger name="org.eclipse.jetty">
+    <level value="WARN" />
+  </logger>
+
+  <logger name="com.mchange.v2.c3p0">
+    <level value="WARN" />
+  </logger>
+
+  <root>
+    <level value="INFO"/>
+    <appender-ref ref="fileAppender"/>
+    <appender-ref ref="consoleAppender"/>
+  </root>
+
+</log4j:configuration>
