@@ -10,11 +10,9 @@
 
   <link rel="stylesheet" type="text/css" href="resources/jquery-ui-1.9.2.custom.css">
   <link rel="stylesheet" type="text/css" href="resources/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css" media="screen">
   <link rel="stylesheet" type="text/css" href="css/digraph.css">
 
   <script type="text/javascript" src="resources/jquery-2.0.0.min.js"></script>
-  <script type="text/javascript" src="resources/bootstrap.min.js"></script>
   <script type="text/javascript" src="resources/jquery.form.min.js"></script>
   <script type="text/javascript" src="resources/marked.js"></script>
   <script type="text/javascript" src="resources/purl.js"></script>
@@ -78,8 +76,10 @@
         populate(dataParsed, nodes, edges);
 
         var svg = d3.select("svg");
-        svg.selectAll("*").remove();
+        svg.selectAll("g").remove();
         drawObjs(nodes, edges, svg);
+
+//        drawDot('digraph {A [label="<div><span class=\'demo-label1\'><b>HTML</b></span>"]; A -> B -> C; B -> D -> E;C -> A [label="<div><span class=\'demo-label2\'>HTML</span></div>"];A -> D;E -> A [label="A"]; D -> B}', svg);
       }
     });
   }
@@ -87,7 +87,8 @@
   function populate(data, nodes, edges) {
     var newNode = {
       label: (data.data.type == "TK")? data.data.content: data.data.type,
-      id: nodes.length + ""
+      id: nodes.length + "",
+      nodeclass: "type-"+data.data.type
     };
 
     nodes.push(newNode);

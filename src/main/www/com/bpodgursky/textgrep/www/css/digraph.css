@@ -1,6 +1,22 @@
 text {
-  font: 300 16px "Helvetica Neue";
+  /*font: 300 16px "Helvetica Neue";*/
+  font-weight:300;
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:14px;
 }
+
+.demo-label1{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:32px;
+  color:green;
+}
+
+.demo-label2{
+  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-size:16px;
+  color:blue;
+}
+
 
 rect {
   fill: #fff;
@@ -10,6 +26,7 @@ rect {
   stroke-width: 3px;
   stroke: #333;
   fill: none;
+  opacity:0.5;
 }
 
 .node:hover {
@@ -61,4 +78,8 @@ label {
 
 svg {
   border: 1px solid #999;
+}
+
+.type-TK > .label > rect {
+  fill: #00ffd0;
 }
