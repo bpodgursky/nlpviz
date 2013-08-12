@@ -10,6 +10,9 @@
 
   <link rel="stylesheet" type="text/css" href="resources/jquery-ui-1.9.2.custom.css">
   <link rel="stylesheet" type="text/css" href="resources/font-awesome.min.css">
+
+  <link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/dagre-d3-simple.css">
   <link rel="stylesheet" type="text/css" href="css/digraph.css">
 
   <script type="text/javascript" src="resources/jquery-2.0.0.min.js"></script>
@@ -18,88 +21,164 @@
   <script type="text/javascript" src="resources/purl.js"></script>
   <script type="text/javascript" src="resources/d3.min.js"></script>
   <script type="text/javascript" src="resources/dagre.js"></script>
-
-  <script src="js/digraph.js"></script>
+  <script src="resources/dagre-d3-simple.js"></script>
 
 </head>
 
 <body>
 
-<div class="input-small">
+<div>
   <label>
-    <input type="search" placeholder="This is an example sentence." id="sentence_input" class="input-large">
+    <textarea placeholder="This is an example sentence." id="sentence_input" class="text-input" rows="3"></textarea>
   </label>
+  <%--TODO why am I doing this manually.  This is like living in the dark ages--%>
+
+  <div class="row-fluid row">
+    <div class="span10 mycontent-left">
+      <svg>
+        <g transform="translate(20, 15)">
+          <rect class="legend" style="fill: #b997ff" rx="5" ry="5" width="70" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Person</tspan>
+            </text>
+          </g>
+        </g>
+        <g transform="translate(110, 15)">
+          <rect class="legend" style="fill: #ffae6a" rx="5" ry="5" width="50" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Date</tspan>
+            </text>
+          </g>
+        </g>
+        <g transform="translate(180, 15)">
+          <rect class="legend" style="fill: #96c2ff" rx="5" ry="5" width="100" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Organization</tspan>
+            </text>
+          </g>
+        </g>
+        <g transform="translate(300, 15)">
+          <rect class="legend" style="fill: #7e7e7e" rx="5" ry="5" width="80" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Location</tspan>
+            </text>
+          </g>
+        </g>
+        <g transform="translate(400, 15)">
+          <rect class="legend" style="fill: #92ff7d" rx="5" ry="5" width="70" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Ordinal</tspan>
+            </text>
+          </g>
+        </g>
+        <g transform="translate(490, 15)">
+          <rect class="legend" style="fill: #fdb9ff" rx="5" ry="5" width="70" height="37"></rect>
+          <g transform="translate(10, 10)">
+            <text>
+              <tspan dy="1em">Number</tspan>
+            </text>
+          </g>
+        </g>
+      </svg>
+
+    </div>
+    <div class="span2">
+      <div style="text-align: center;">
+        By <a href="http://bpodgursky.wordpress.com/">Ben Podgursky</a>
+        <span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <%--</div>--%>
 </div>
 
 <div id="attach">
-  <svg id="svg-canvas" width=800 height=600>
-    <defs>
-      <marker id="arrowhead"
-              viewBox="0 0 10 10"
-              refX="8"
-              refY="5"
-              markerUnits="strokeWidth"
-              markerWidth="8"
-              markerHeight="5"
-              orient="auto"
-              style="fill: #333">
-        <path d="M 0 0 L 10 5 L 0 10 z"></path>
-      </marker>
-    </defs>
-  </svg>
+  <svg class="main-svg" id="svg-canvas"></svg>
 </div>
 
+
+
 <script>
+
+  var legendValues = {
+    0: {
+      label: "Organization", nodeclass: "legend-organization"
+    },
+    1: {
+      label: "Person", nodeclass: "legend-person"
+    }
+  };
+
+  renderJSObjsToD3(legendValues, [], ".main-svg");
+
 
   var input = $("#sentence_input");
   input.keypress(function (e) {
     if (e.which == 13) {
-      renderSentence(input.val());
+      renderText(input.val());
       e.preventDefault();
     }
   });
 
-  function renderSentence(sentence) {
+  function renderText(text) {
     $.ajax({
       type: 'GET',
       dataType: 'html',
       url: "parser",
       data: {
-        sentence: sentence
+        text: text
       },
       success: function (data) {
         var dataParsed = JSON.parse(data);
+        console.log(dataParsed);
 
-        var nodes = [];
+        var nodes = {};
         var edges = [];
 
-        populate(dataParsed, nodes, edges);
+        dataParsed.forEach(function (e) {
+          populate(e, nodes, edges);
+        });
 
-        var svg = d3.select("svg");
-        svg.selectAll("g").remove();
-        drawObjs(nodes, edges, svg);
+        console.log(JSON.stringify(nodes));
+        console.log(JSON.stringify(edges));
 
-//        drawDot('digraph {A [label="<div><span class=\'demo-label1\'><b>HTML</b></span>"]; A -> B -> C; B -> D -> E;C -> A [label="<div><span class=\'demo-label2\'>HTML</span></div>"];A -> D;E -> A [label="A"]; D -> B}', svg);
+        renderJSObjsToD3(nodes, edges, ".main-svg");
       }
     });
   }
 
   function populate(data, nodes, edges) {
+    var nodeID = Object.keys(nodes).length;
+
     var newNode = {
-      label: (data.data.type == "TK")? data.data.content: data.data.type,
-      id: nodes.length + "",
-      nodeclass: "type-"+data.data.type
+      label: (data.data.type == "TK") ? data.data.word : data.data.type,
+      id: nodeID + ""
     };
 
-    nodes.push(newNode);
+    var classes = ["type-" + data.data.type];
+    if (data.data.ne) {
+      classes.push("ne-" + data.data.ne);
+    }
+
+    newNode.nodeclass = classes.join(" ");
+
+    //  I hate javascript
+    nodes[nodeID] = newNode;
 
     data.children.forEach(function (child) {
       var newChild = populate(child, nodes, edges);
 
       edges.push({
-        source: newNode,
-        target: newChild,
-        id: newNode.id+"-"+newChild.id
+        source: newNode.id,
+        target: newChild.id,
+        id: newNode.id + "-" + newChild.id
       });
     });
 
@@ -125,7 +204,7 @@
     });
   }
 
-  renderSentence("This is an example sentence.");
+  renderText("This is an example sentence.");
 
 </script>
 

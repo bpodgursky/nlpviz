@@ -1,85 +1,68 @@
-text {
-  /*font: 300 16px "Helvetica Neue";*/
-  font-weight:300;
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size:14px;
+.ne-O > .label > rect {
+  fill: #00ffd0;
 }
 
-.demo-label1{
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size:32px;
-  color:green;
+.ne-PERSON > .label > rect {
+  fill: #b997ff;
 }
 
-.demo-label2{
-  font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-size:16px;
-  color:blue;
+.ne-DATE > .label > rect {
+  fill: #ffae6a;
 }
 
-
-rect {
-  fill: #fff;
+.ne-ORGANIZATION > .label > rect {
+  fill: #96c2ff;
 }
 
-.node > rect {
-  stroke-width: 3px;
-  stroke: #333;
-  fill: none;
-  opacity:0.5;
+.ne-LOCATION > .label > rect {
+  fill: #7e7e7e;
 }
 
-.node:hover {
-  cursor: pointer;
-  opacity: 0.4;
+.ne-ORDINAL > .label > rect {
+  fill: #92ff7d;
 }
 
-.edge rect {
-  fill: #fff
+.ne-NUMBER > .label > rect {
+  fill: #fdb9ff;
 }
 
-.edge path {
-  fill: none;
-  stroke: #333;
-  stroke-width: 1.5px;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden
 }
 
-.edge:hover {
-  cursor: pointer;
-  opacity: 0.4;
-}
-
-.cp {
-  opacity: 0;
-}
-
-.cp:hover {
-  cursor:pointer;
-  opacity: 1;
-}
-
-
-h1, h2 {
-  color: #333;
-}
-
-textarea {
-  width: 800px;
-}
-
-label {
-  margin-top: 1em;
-  display: block;
-}
-
-.error {
-  color: red;
-}
-
-svg {
+.main-svg {
+  position: fixed;
+  top: 150px;
+  bottom: 0;
+  left: 0;
+  right: 0;
   border: 1px solid #999;
 }
 
-.type-TK > .label > rect {
-  fill: #00ffd0;
+textarea {
+  border: 1px solid #999999;
+  width: 100%;
+  margin: 5px 0;
+  padding: 3px;
 }
+
+.legend {
+  stroke-width: 3px;
+  stroke: #333;
+  fill: none;
+  opacity: 0.5;
+}
+
+/*.legend-person  > .label > rect {*/
+/*fill: #b997ff;*/
+/*}*/
+
+/*.legend-date  > .label > rect {*/
+/*fill: #ffae6a;*/
+/*}*/
+
+/*.legend-organization > .label > rect {*/
+/*fill: #96c2ff;*/
+/*}*/
