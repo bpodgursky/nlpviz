@@ -27,7 +27,11 @@
 
 <div>
   <label>
-    <textarea placeholder="This is an example sentence." id="sentence_input" class="text-input" rows="3"></textarea>
+    <textarea placeholder="Type or paste sentence to parse here (press enter to submit)."
+              id="sentence_input"
+              class="text-input"
+              rows="3">The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.
+    </textarea>
   </label>
   <%--TODO why am drawing things manually.  This is like living in the dark ages--%>
   <div class="row-fluid row">
@@ -187,7 +191,7 @@
     });
   }
 
-  renderText("This is an example sentence.");
+  renderText("The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.");
 
 </script>
 
