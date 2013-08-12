@@ -1,6 +1,6 @@
-package com.bpodgursky.textgrep.servlet;
+package com.bpodgursky.nlpviz.servlet;
 
-import com.bpodgursky.textgrep.ParseHelper2;
+import com.bpodgursky.nlpviz.ParseHelper2;
 import org.json.JSONException;
 
 import javax.servlet.ServletException;

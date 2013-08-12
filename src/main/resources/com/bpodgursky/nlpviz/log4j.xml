@@ -3,7 +3,7 @@
 <log4j:configuration debug="true">
 
   <appender name="fileAppender" class="org.apache.log4j.FileAppender">
-    <param name="file" value="textgrep.log" />
+    <param name="file" value="nlpviz.log" />
     <param name="append" value="true" />
     <param name="threshold" value="info" />
     <layout class="org.apache.log4j.PatternLayout">

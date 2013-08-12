@@ -1,7 +1,7 @@
-package com.bpodgursky.textgrep.api;
+package com.bpodgursky.nlpviz.api;
 
-import com.bpodgursky.textgrep.servlet.HomeServlet;
-import com.bpodgursky.textgrep.servlet.ParseServlet;
+import com.bpodgursky.nlpviz.servlet.HomeServlet;
+import com.bpodgursky.nlpviz.servlet.ParseServlet;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -32,7 +32,7 @@ public class WebServer implements Runnable {
     try {
 
       Server uiServer = new Server(DEFAULT_PORT);
-      final URL warUrl = uiServer.getClass().getClassLoader().getResource("com/bpodgursky/textgrep/www");
+      final URL warUrl = uiServer.getClass().getClassLoader().getResource("com/bpodgursky/nlpviz/www");
       final String warUrlString = warUrl.toExternalForm();
 
       WebAppContext context = new WebAppContext(warUrlString, "/");
@@ -52,7 +52,7 @@ public class WebServer implements Runnable {
   }
 
   public static void main(String[] args) throws InterruptedException {
-    DOMConfigurator.configure(WebServer.class.getResource("/com/bpodgursky/textgrep/log4j.xml"));
+    DOMConfigurator.configure(WebServer.class.getResource("/com/bpodgursky/nlpviz/log4j.xml"));
 
     WebServer server = new WebServer();
     Thread thread1 = new Thread(server);

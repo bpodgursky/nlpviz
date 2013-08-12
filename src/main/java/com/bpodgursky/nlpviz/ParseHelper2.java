@@ -1,4 +1,4 @@
-package com.bpodgursky.textgrep;
+package com.bpodgursky.nlpviz;
 
 import com.google.common.collect.Lists;
 import edu.stanford.nlp.ling.CoreAnnotations;

@@ -1,4 +1,4 @@
-package com.bpodgursky.textgrep.servlet;
+package com.bpodgursky.nlpviz.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

@@ -1,9 +1,8 @@
-package com.bpodgursky.textgrep.scripts;
+package com.bpodgursky.nlpviz.scripts;
 
 import com.google.common.collect.Lists;
 import edu.stanford.nlp.dcoref.CorefChain;
 import edu.stanford.nlp.dcoref.CorefCoreAnnotations;
-import edu.stanford.nlp.io.IOUtils;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
@@ -18,8 +17,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
