@@ -34,11 +34,21 @@ html, body {
 
 .main-svg {
   position: fixed;
-  top: 150px;
-  bottom: 0;
+  top: 175px;
   left: 0;
-  right: 0;
+  height: 1000px;
+  width: 100%;
   border: 1px solid #999;
+}
+
+.legend-svg {
+  position: fixed;
+  /*top: 150px;*/
+  /*left: 0;*/
+  height: 60px;
+  width: 600px;
+  /*width: 100%;*/
+  /*border: 1px solid #999;*/
 }
 
 textarea {

@@ -4,7 +4,7 @@
 
 <head>
 
-  <title>${param.page_title}</title>
+  <title>NLP Parse Visualization</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -17,10 +17,8 @@
 
   <script type="text/javascript" src="resources/jquery-2.0.0.min.js"></script>
   <script type="text/javascript" src="resources/jquery.form.min.js"></script>
-  <script type="text/javascript" src="resources/marked.js"></script>
-  <script type="text/javascript" src="resources/purl.js"></script>
   <script type="text/javascript" src="resources/d3.min.js"></script>
-  <script type="text/javascript" src="resources/dagre.js"></script>
+  <script type="text/javascript" src="resources/dagre.min.js"></script>
   <script src="resources/dagre-d3-simple.js"></script>
 
 </head>
@@ -31,11 +29,10 @@
   <label>
     <textarea placeholder="This is an example sentence." id="sentence_input" class="text-input" rows="3"></textarea>
   </label>
-  <%--TODO why am I doing this manually.  This is like living in the dark ages--%>
-
+  <%--TODO why am drawing things manually.  This is like living in the dark ages--%>
   <div class="row-fluid row">
     <div class="span10 mycontent-left">
-      <svg>
+      <svg class="legend-svg">
         <g transform="translate(20, 15)">
           <rect class="legend" style="fill: #b997ff" rx="5" ry="5" width="70" height="37"></rect>
           <g transform="translate(10, 10)">
@@ -88,36 +85,26 @@
 
     </div>
     <div class="span2">
-      <div style="text-align: center;">
+      <div style="text-align: left;">
         By <a href="http://bpodgursky.wordpress.com/">Ben Podgursky</a>
+        <br>
+        NLP by <a href="http://nlp.stanford.edu/software/corenlp.shtml">CoreNLP</a>
+        <br>
+        Visualization by <a href="https://github.com/cpettitt/dagre">dagre</a> and <a href="http://d3js.org/">d3</a>
+        <br>
+        Source code <a href="https://github.com/bpodgursky/nlpviz">here</a>
         <span></span>
       </div>
     </div>
 
   </div>
-
-  <%--</div>--%>
 </div>
 
 <div id="attach">
   <svg class="main-svg" id="svg-canvas"></svg>
 </div>
 
-
-
 <script>
-
-  var legendValues = {
-    0: {
-      label: "Organization", nodeclass: "legend-organization"
-    },
-    1: {
-      label: "Person", nodeclass: "legend-person"
-    }
-  };
-
-  renderJSObjsToD3(legendValues, [], ".main-svg");
-
 
   var input = $("#sentence_input");
   input.keypress(function (e) {
@@ -137,7 +124,6 @@
       },
       success: function (data) {
         var dataParsed = JSON.parse(data);
-        console.log(dataParsed);
 
         var nodes = {};
         var edges = [];
@@ -145,9 +131,6 @@
         dataParsed.forEach(function (e) {
           populate(e, nodes, edges);
         });
-
-        console.log(JSON.stringify(nodes));
-        console.log(JSON.stringify(edges));
 
         renderJSObjsToD3(nodes, edges, ".main-svg");
       }
@@ -205,6 +188,17 @@
   }
 
   renderText("This is an example sentence.");
+
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-42483033-3', 'bpodgursky.com');
+  ga('send', 'pageview');
 
 </script>
 
