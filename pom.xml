@@ -214,6 +214,39 @@
   </dependencies>
 
   <build>
+
+    <plugins>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <archive>
+            <manifest>
+              <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+            </manifest>
+            <manifestEntries>
+              <Implementation-Build>${build-commit}</Implementation-Build>
+            </manifestEntries>
+          </archive>
+          <descriptors>
+            <descriptor>src/main/resources/com/bpodgursky/nlpviz/jobjar.xml</descriptor>
+          </descriptors>
+          <attach>false</attach>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+            <configuration>
+              <attach>false</attach>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+
     <resources>
       <resource>
         <directory>src/main/resources/</directory>
