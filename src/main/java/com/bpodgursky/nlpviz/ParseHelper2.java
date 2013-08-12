@@ -21,8 +21,8 @@ public class ParseHelper2 {
   private final StanfordCoreNLP pipeline;
 
   public ParseHelper2() {
-    Properties props = new Properties();
-    props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
+    Properties props = new Properties();    // dcoref
+    props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse");
     pipeline = new StanfordCoreNLP(props);
 
   }
