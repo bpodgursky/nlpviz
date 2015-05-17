@@ -19,8 +19,7 @@ rect {
   fill: #fff
 }
 
-.edge path {
-  fill: none;
+.edgePath path {
   stroke: #333;
   stroke-width: 1.5px;
 }

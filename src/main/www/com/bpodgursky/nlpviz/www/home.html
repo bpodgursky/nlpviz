@@ -17,9 +17,9 @@
 
   <script type="text/javascript" src="resources/jquery-2.0.0.min.js"></script>
   <script type="text/javascript" src="resources/jquery.form.min.js"></script>
-  <script type="text/javascript" src="resources/d3.min.js"></script>
-  <script type="text/javascript" src="resources/dagre.min.js"></script>
-  <script src="resources/dagre-d3-simple.js"></script>
+
+  <script src="resources/d3.v3.min.js" charset="utf-8"></script>
+  <script src="resources/dagre-d3.js"></script>
 
 </head>
 
@@ -32,7 +32,7 @@
               class="text-input"
               rows="3">The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.</textarea>
   </label>
-  <%--TODO why am drawing things manually.  This is like living in the dark ages--%>
+  <!--TODO why am drawing things manually. This is like living in the dark ages-->
   <div class="row-fluid row">
     <div class="span10 mycontent-left">
       <svg class="legend-svg">
@@ -104,7 +104,7 @@
 </div>
 
 <div id="attach">
-  <svg class="main-svg" id="svg-canvas"></svg>
+  <svg id="svg-canvas" class="main-svg"></svg>
 </div>
 
 <script>
@@ -126,16 +126,58 @@
         text: text
       },
       success: function (data) {
+
+        $("#svg-canvas").empty();
+
         var dataParsed = JSON.parse(data);
 
         var nodes = {};
         var edges = [];
 
+        var g = new dagreD3.graphlib.Graph()
+            .setGraph({})
+            .setDefaultEdgeLabel(function () {
+              return {};
+            });
+
         dataParsed.forEach(function (e) {
           populate(e, nodes, edges);
         });
 
-        renderJSObjsToD3(nodes, edges, ".main-svg");
+        for (var key in nodes) {
+          var node = nodes[key];
+          g.setNode(node.id, {
+            label: node.label,
+            class: node.nodeclass,
+            rx: 5,
+            ry: 5
+          });
+        }
+
+        edges.forEach(function (e) {
+          g.setEdge(e.source, e.target, {
+            lineTension: .8,
+            lineInterpolate: "bundle"
+          });
+        });
+
+        var render = new dagreD3.render();
+
+        var svg = d3.select("#svg-canvas"),
+            svgGroup = svg.append("g");
+
+        render(d3.select("#svg-canvas g"), g);
+
+        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+        svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+        svg.attr("height", g.graph().height + 40);
+
+        svgGroup.attr("transform", "translate(5, 5)");
+        svg.call(d3.behavior.zoom().on("zoom", function redraw() {
+          svgGroup.attr("transform",
+              "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
+        }));
+
       }
     });
   }
@@ -166,6 +208,7 @@
         target: newChild.id,
         id: newNode.id + "-" + newChild.id
       });
+
     });
 
     return newNode;
@@ -195,10 +238,17 @@
 </script>
 
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  (function (i, s, o, g, r, a, m) {
+    i['GoogleAnalyticsObject'] = r;
+    i[r] = i[r] || function () {
+      (i[r].q = i[r].q || []).push(arguments)
+    }, i[r].l = 1 * new Date();
+    a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+    a.async = 1;
+    a.src = g;
+    m.parentNode.insertBefore(a, m)
+  })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
   ga('create', 'UA-42483033-3', 'bpodgursky.com');
   ga('send', 'pageview');
