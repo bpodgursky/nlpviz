@@ -1,28 +1,55 @@
-.ne-O > .label > rect {
+
+text {
+  font-weight: 300;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+rect {
+  fill: #fff;
+}
+
+.node > rect {
+  stroke-width: 1px;
+  stroke: #333;
+  fill: none;
+  opacity: 0.5;
+}
+
+.edge rect {
+  fill: #fff
+}
+
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+.ne-O > rect {
   fill: #00ffd0;
 }
 
-.ne-PERSON > .label > rect {
+.ne-PERSON > rect {
   fill: #b997ff;
 }
 
-.ne-DATE > .label > rect {
+.ne-DATE > rect {
   fill: #ffae6a;
 }
 
-.ne-ORGANIZATION > .label > rect {
+.ne-ORGANIZATION > rect {
   fill: #96c2ff;
 }
 
-.ne-LOCATION > .label > rect {
+.ne-LOCATION > rect {
   fill: #7e7e7e;
 }
 
-.ne-ORDINAL > .label > rect {
+.ne-ORDINAL > rect {
   fill: #92ff7d;
 }
 
-.ne-NUMBER > .label > rect {
+.ne-NUMBER > rect {
   fill: #fdb9ff;
 }
 
@@ -43,12 +70,8 @@ html, body {
 
 .legend-svg {
   position: fixed;
-  /*top: 150px;*/
-  /*left: 0;*/
   height: 60px;
   width: 600px;
-  /*width: 100%;*/
-  /*border: 1px solid #999;*/
 }
 
 textarea {
@@ -64,15 +87,3 @@ textarea {
   fill: none;
   opacity: 0.5;
 }
-
-/*.legend-person  > .label > rect {*/
-/*fill: #b997ff;*/
-/*}*/
-
-/*.legend-date  > .label > rect {*/
-/*fill: #ffae6a;*/
-/*}*/
-
-/*.legend-organization > .label > rect {*/
-/*fill: #96c2ff;*/
-/*}*/

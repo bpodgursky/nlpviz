@@ -1,5 +1,10 @@
 package com.bpodgursky.nlpviz.api;
 
+import javax.servlet.DispatcherType;
+import java.net.URL;
+import java.util.EnumSet;
+import java.util.concurrent.Semaphore;
+
 import com.bpodgursky.nlpviz.servlet.HomeServlet;
 import com.bpodgursky.nlpviz.servlet.ParseServlet;
 import org.apache.log4j.xml.DOMConfigurator;
@@ -7,11 +12,6 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.eclipse.jetty.webapp.WebAppContext;
-
-import javax.servlet.DispatcherType;
-import java.net.URL;
-import java.util.EnumSet;
-import java.util.concurrent.Semaphore;
 
 public class WebServer implements Runnable {
   public static final int DEFAULT_PORT = 43315;
@@ -27,7 +27,6 @@ public class WebServer implements Runnable {
     shutdownLock.release();
   }
 
-  @Override
   public void run() {
     try {
 
