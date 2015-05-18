@@ -133,21 +133,22 @@
         var nodes = {};
         var edges = [];
 
+        dataParsed.forEach(function (e) {
+          populate(e, nodes, edges);
+        });
+
         var g = new dagreD3.graphlib.Graph()
             .setGraph({})
             .setDefaultEdgeLabel(function () {
               return {};
             });
 
-        dataParsed.forEach(function (e) {
-          populate(e, nodes, edges);
-        });
-
         for (var key in nodes) {
           var node = nodes[key];
           g.setNode(node.id, {
             label: node.label,
             class: node.nodeclass,
+            //  round edges
             rx: 5,
             ry: 5
           });
@@ -171,6 +172,7 @@
         svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
         svg.attr("height", g.graph().height + 40);
 
+        //  enable zoom and scrolling
         svgGroup.attr("transform", "translate(5, 5)");
         svg.call(d3.behavior.zoom().on("zoom", function redraw() {
           svgGroup.attr("transform",
@@ -196,7 +198,6 @@
 
     newNode.nodeclass = classes.join(" ");
 
-    //  I hate javascript
     nodes[nodeID] = newNode;
 
     data.children.forEach(function (child) {
