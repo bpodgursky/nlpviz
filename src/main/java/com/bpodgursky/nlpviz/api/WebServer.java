@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.EnumSet;
 import java.util.concurrent.Semaphore;
 
+import com.bpodgursky.nlpviz.servlet.HomeServlet;
 import com.bpodgursky.nlpviz.servlet.ParseServlet;
 import org.apache.log4j.xml.DOMConfigurator;
 import org.eclipse.jetty.server.Server;
@@ -35,6 +36,7 @@ public class WebServer implements Runnable {
 
       WebAppContext context = new WebAppContext(warUrlString, "/");
       context.addServlet(new ServletHolder(new ParseServlet()), PARSER);
+      context.addServlet(new ServletHolder(new HomeServlet()), HOME);
       context.addFilter(GzipFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
       uiServer.setHandler(context);
