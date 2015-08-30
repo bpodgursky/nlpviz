@@ -6,6 +6,6 @@ Source code for a sentence parse tree visualiation found here: http://nlpviz.bpo
 Getting Started
 ---------------
 
-`mvn exec:java` will start the parsing servlet. You can then go to:
+`mvn package exec:java` will start the parsing servlet. You can then go to:
 [[http://localhost:43315]] to use the servlet in your browser.
 

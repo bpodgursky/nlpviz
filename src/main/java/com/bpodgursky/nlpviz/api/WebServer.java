@@ -13,13 +13,16 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.servlets.GzipFilter;
 import org.eclipse.jetty.webapp.WebAppContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class WebServer implements Runnable {
   public static final int DEFAULT_PORT = 43315;
   public static final String PARSER = "/parser";
   public static final String HOME = "/home";
 
-
   private final Semaphore shutdownLock = new Semaphore(0);
+  private static final Logger LOG = LoggerFactory.getLogger(WebServer.class);
 
   public WebServer(){}
 
@@ -40,6 +43,8 @@ public class WebServer implements Runnable {
       context.addFilter(GzipFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
 
       uiServer.setHandler(context);
+
+      LOG.info("Parse Server is listening on port: " + DEFAULT_PORT);
 
       uiServer.start();
 
