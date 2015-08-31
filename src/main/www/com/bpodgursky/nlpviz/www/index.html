@@ -20,16 +20,29 @@
   <script src="resources/d3.v3.min.js" charset="utf-8"></script>
   <script src="resources/dagre-d3.js"></script>
 
+  <script type="text/javascript" src="resources/nlpviz.js"></script>
+
+  <script type="text/javascript">
+    function onload(expression) {
+      renderText(expression);
+      $("#sentence_input").val(expression);
+    }
+  </script>
+
+  <script>
+    var initial_expression = "The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.";
+  </script>
+
 </head>
 
-<body>
+<body onload="onload(initial_expression);">
 
 <div>
   <label>
     <textarea placeholder="Type or paste sentence to parse here (press enter to submit)."
               id="sentence_input"
               class="text-input"
-              rows="3">The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.</textarea>
+              rows="3"> </textarea>
   </label>
   <!--TODO why am drawing things manually. This is like living in the dark ages-->
   <div class="row-fluid row">
@@ -109,131 +122,9 @@
 <script>
 
   var input = $("#sentence_input");
-  input.keypress(function (e) {
-    if (e.which == 13) {
-      renderText(input.val());
-      e.preventDefault();
-    }
+  input.keyup(function (e) {
+    renderText(input.val());
   });
-
-  function renderText(text) {
-    $.ajax({
-      type: 'GET',
-      dataType: 'html',
-      url: "parser",
-      data: {
-        text: text
-      },
-      success: function (data) {
-
-        $("#svg-canvas").empty();
-
-        var dataParsed = JSON.parse(data);
-
-        var nodes = {};
-        var edges = [];
-
-        dataParsed.forEach(function (e) {
-          populate(e, nodes, edges);
-        });
-
-        var g = new dagreD3.graphlib.Graph()
-            .setGraph({})
-            .setDefaultEdgeLabel(function () {
-              return {};
-            });
-
-        for (var key in nodes) {
-          var node = nodes[key];
-          g.setNode(node.id, {
-            label: node.label,
-            class: node.nodeclass,
-            //  round edges
-            rx: 5,
-            ry: 5
-          });
-        }
-
-        edges.forEach(function (e) {
-          g.setEdge(e.source, e.target, {
-            lineTension: .8,
-            lineInterpolate: "bundle"
-          });
-        });
-
-        var render = new dagreD3.render();
-
-        var svg = d3.select("#svg-canvas"),
-            svgGroup = svg.append("g");
-
-        render(d3.select("#svg-canvas g"), g);
-
-        var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
-        svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
-        svg.attr("height", g.graph().height + 40);
-
-        //  enable zoom and scrolling
-        svgGroup.attr("transform", "translate(5, 5)");
-        svg.call(d3.behavior.zoom().on("zoom", function redraw() {
-          svgGroup.attr("transform",
-              "translate(" + d3.event.translate + ")" + " scale(" + d3.event.scale + ")");
-        }));
-
-      }
-    });
-  }
-
-  function populate(data, nodes, edges) {
-    var nodeID = Object.keys(nodes).length;
-
-    var newNode = {
-      label: (data.data.type == "TK") ? data.data.word : data.data.type,
-      id: nodeID + ""
-    };
-
-    var classes = ["type-" + data.data.type];
-    if (data.data.ne) {
-      classes.push("ne-" + data.data.ne);
-    }
-
-    newNode.nodeclass = classes.join(" ");
-
-    nodes[nodeID] = newNode;
-
-    data.children.forEach(function (child) {
-      var newChild = populate(child, nodes, edges);
-
-      edges.push({
-        source: newNode.id,
-        target: newChild.id,
-        id: newNode.id + "-" + newChild.id
-      });
-
-    });
-
-    return newNode;
-  }
-
-
-  function buildGraphData(node, nodes, links) {
-
-    var index = nodes.length;
-    nodes.push({
-      name: node.data.content,
-      group: 1
-    });
-
-    node.children.forEach(function (e) {
-      links.push({
-        source: index,
-        target: nodes.length,
-        value: 2
-      });
-      buildGraphData(e, nodes, links);
-    });
-  }
-
-  renderText("The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.");
 
 </script>
 
