@@ -19,6 +19,7 @@
 
   <script src="resources/d3.v3.min.js" charset="utf-8"></script>
   <script src="resources/dagre-d3.js"></script>
+  <script src="resources/uri.min.js"></script>
 
 </head>
 
@@ -29,7 +30,7 @@
     <textarea placeholder="Type or paste sentence to parse here (press enter to submit)."
               id="sentence_input"
               class="text-input"
-              rows="3">The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.</textarea>
+              rows="3"></textarea>
   </label>
   <!--TODO why am drawing things manually. This is like living in the dark ages-->
   <div class="row-fluid row">
@@ -86,15 +87,13 @@
       </svg>
 
     </div>
-    <div class="span2">
+    <div id="info" class="span2">
       <div style="text-align: left;">
-        By <a href="http://bpodgursky.wordpress.com/">Ben Podgursky</a>
+        By <a href="http://bpodgursky.wordpress.com/">Ben Podgursky</a> Source code <a href="https://github.com/bpodgursky/nlpviz">here</a>
         <br>
-        NLP by <a href="http://nlp.stanford.edu/software/corenlp.shtml">CoreNLP</a>
+        NLP by <a href="http://nlp.stanford.edu/software/corenlp.shtml">CoreNLP</a>, visualized by <a href="https://github.com/cpettitt/dagre-d3">dagre-d3</a> and <a href="http://d3js.org/">d3</a>
         <br>
-        Visualization by <a href="https://github.com/cpettitt/dagre-d3">dagre-d3</a> and <a href="http://d3js.org/">d3</a>
-        <br>
-        Source code <a href="https://github.com/bpodgursky/nlpviz">here</a>
+        <a href="index.html?lang=en">English</a> <a href="index.html?lang=es">Spanish</a>
         <span></span>
       </div>
     </div>
@@ -111,18 +110,19 @@
   var input = $("#sentence_input");
   input.keypress(function (e) {
     if (e.which == 13) {
-      renderText(input.val());
+      renderText(input.val(), getLang());
       e.preventDefault();
     }
   });
 
-  function renderText(text) {
+  function renderText(text, language) {
     $.ajax({
       type: 'GET',
       dataType: 'html',
       url: "parser",
       data: {
-        text: text
+        text: text,
+        lang: language
       },
       success: function (data) {
 
@@ -233,7 +233,27 @@
     });
   }
 
-  renderText("The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.");
+  var lang = getLang();
+
+  var defaultText;
+  if(lang == "en") {
+    defaultText = "The outbreak of the Liberal Revolution of 1820 in Lisbon compelled Pedro I's father to return to Portugal in April 1821, leaving him to rule Brazil as regent.";
+  }else if(lang == "es"){
+    defaultText = "En 1801, después de la muerte de su hermano mayor, Francisco Antonio, Pedro se convirtió en el segundo en la línea al trono portugués y como tal en príncipe de Beira."
+
+    $("#info").append($('<a href="https://nlp.stanford.edu/software/spanish-faq.shtml"></a>').text("Spanish POS tags"));
+  }
+
+  $("#sentence_input").text(defaultText);
+  renderText(defaultText, lang);
+
+  function getLang(){
+    var lang = new URI().query(true).lang;
+    if(!lang){
+      return "en"
+    }
+    return lang;
+  }
 
 </script>
 

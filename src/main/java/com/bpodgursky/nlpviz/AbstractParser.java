@@ -1,5 +1,9 @@
 package com.bpodgursky.nlpviz;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+
 import com.google.common.collect.Lists;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
@@ -12,19 +16,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-
-public class ParseHelper2 {
+public abstract class AbstractParser {
 
   private final StanfordCoreNLP pipeline;
 
-  public ParseHelper2() {
-    Properties props = new Properties();
-    props.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
-    pipeline = new StanfordCoreNLP(props);
-
+  public AbstractParser(Properties properties) {
+    pipeline = new StanfordCoreNLP(properties);
   }
 
   public JSONArray parse(String text) throws JSONException {
@@ -61,12 +58,17 @@ public class ParseHelper2 {
       String pos = next.get(CoreAnnotations.PartOfSpeechAnnotation.class);
       String ne = next.get(CoreAnnotations.NamedEntityTagAnnotation.class);
 
+      System.out.println(pos);
+
       obj.put("word", word);
       obj.put("pos", pos);
       obj.put("ne", ne);
       obj.put("type", "TK");
 
     }else{
+
+//      System.out.println(tree.label());
+
       obj.put("type", tree.label());
     }
 
