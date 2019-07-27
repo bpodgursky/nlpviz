@@ -1,7 +1,7 @@
 nlpviz
 ======
 
-Source code for a sentence parse tree visualiation found here: http://nlpviz.bpodgursky.com/
+Source code for a sentence parse tree visualization found here: http://nlpviz.bpodgursky.com/
 
 Getting Started
 ---------------
